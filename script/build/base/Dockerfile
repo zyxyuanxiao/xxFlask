@@ -12,4 +12,6 @@ RUN yum update -y && yum upgrade -y && yum install -y \
     expect openssh-clients openssl openssl-devel mysql-devel \
     && yum clean all
 
-RUN pip install --no-cache-dir --trusted-host pypi.douban.com -i http://pypi.douban.com/simple/ requests flask flask-restful gevent protobuf redis sqlalchemy xlrd httpie ujson M2Crypto pycrypto lz4 uWSGI bcrypt cachetools
+RUN pip install --no-cache-dir --trusted-host pypi.douban.com -i http://pypi.douban.com/simple/ \
+    requests flask flask-restful gevent protobuf redis sqlalchemy \
+    xlrd httpie ujson M2Crypto pycrypto lz4 uWSGI bcrypt cachetools
