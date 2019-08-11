@@ -190,9 +190,9 @@ class RedisDB(object):
                                                               max_connections=2 ** 31,
                                                               socket_keepalive=True)
                 else:
-                    self.pool = redis.ConnectionPool(host=config['HOST'],
-                                                     port=config['PORT'],
-                                                     password=config['PASSWORD'],
+                    self.pool = redis.ConnectionPool(host=config['host'],
+                                                     port=config['port'],
+                                                     password=config['password'],
                                                      db=0, socket_keepalive=True)
                     n_redis = redis.StrictRedis(connection_pool=self.pool)
 

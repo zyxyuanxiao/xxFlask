@@ -1,89 +1,67 @@
 # -*- coding:utf-8 -*-
 
-class Config:
-    APP_NAME = 'notifynew'
-    DEBUG = False
-    HOST = '0.0.0.0'
-    PORT = 9010
-    THREADED = False
-    WSGI_SPAWN_POOL_SIZE = 100
-    DEBUG_BACK_DOOR = 5000
-    LOCAL_LOG = True
 
-    REGION = "gl"
-
-    MAX_TOKEN_AGE = 43200
-    SECRET_KEY = '%/\xf3jIl\xf0\xd4\xdcR\xcf:\xac)R\x8dm\x1d*4,\xa8\x99\xac'
-
-    DISPATCH_SERVER_URL = 'http://dockerhost:9006'
+class Config(object):
+    app_name = 'default'
+    debug = False
+    host = '0.0.0.0'
+    port = 8008
+    threaded = False
+    wsgi_spawn_pool_size = 100
+    debug_back_door = 5000
+    local_log = True
 
     # DB
-    DB_CHECK = False
-    REDIS = [
+    db_check = False
+    redis = [
         {
-            'NAME': 'cache_locker',
-            'HOST': 'dockerhost',
-            'PORT': '7800',
-            'PASSWD': '',
-            'ISCLUSTER': False,
-        },
-        {
-            'NAME': 'cache_misc',
-            'HOST': 'dockerhost',
-            'PORT': '7800',
-            'PASSWD': '',
-            'ISCLUSTER': False,
-        },
-        {
-            'NAME': 'ssd_misc',
-            'HOST': 'dockerhost',
-            'PORT': '7700',
-            'PASSWD': '',
-            'ISCLUSTER': False,
+            'name': 'default_redis',
+            'host': '0.0.0.0',
+            'port': '7800',
+            'password': '',
+            'is_cluster': False,
         }
     ]
 
     # LOCK
-    LOCKER_EXPIRED = 20
-    DEBUG_LOCK = False
+    locker_expired = 20
+    debug_lock = False
 
-    # EXTENSIONS
-    EXTENSIONS = [
+    # todo EXTENSIONS
+    extensions = [
         {
-            'EXTENSION_NAME': 'LAUNCHED_EXTENSION',
-            'EXTENSION_MODULE': 'notifynew.launched_extension',
-            'EXTENSION_LAZY_MODE': True,
-            'EXTENSION_TAG': 'TAG_LAUNCHED',
+            'extension_name': '',
+            'extension_module': '',
+            'extension_lazy_mode': '',
+            'extension_tag': '',
         }
     ]
 
     # VIEW
-    VIEW_MODULE_INFO = [
+    view_module = [
         {
-            'FILE_DIR': 'notifynew',
-            'FILE_PREFIX': 'view_',
-            'FILE_SUFFIX': '',
-            'MODULE_PREFIX': 'notifynew',
+            'file_dir': 'default',
+            'file_prefix': 'view_',
+            'module_prefix': 'default',
         }
     ]
 
     # MODEL
-    MODEL_MODULE_INFO = [
+    model_module = [
         {
-            'FILE_DIR': 'notifynew',
-            'FILE_PREFIX': 'model_',
-            'FILE_SUFFIX': '',
-            'MODULE_PREFIX': 'notifynew',
+            'file_dir': 'default',
+            'file_prefix': 'model_',
+            'module_prefix': 'default',
         }
     ]
 
     # PROTOCOL
-    PROTOCOL_MODULE_INFO = [
+    protocol_module_info = [
         {
-            'FILE_DIR': 'protocol',
-            'FILE_PREFIX': '',
-            'FILE_SUFFIX': 'pb2',
-            'MODULE_PREFIX': 'protocol',
+            'file_dir': 'protocol',
+            'file_prefix': '',
+            'file_suffix': 'pb2',
+            'module_prefix': 'protocol',
         },
     ]
 

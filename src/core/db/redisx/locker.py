@@ -43,9 +43,9 @@ class Locker(object):
     ''')
 
     def __init__(self, setting, db, **kwargs):
-        self._expire_time = setting.LOCKER_EXPIRED
+        self._expire_time = setting.locker_expired
         self.db = db
-        self.debug = setting.DEBUG_LOCK
+        self.debug = setting.debug_lock
         self.max_retry = setting.MAX_RETRY
         self.log = kwargs.get("log", None)
         self.lock_exception_cls = kwargs.get("lock_exception", None)

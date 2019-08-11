@@ -13,6 +13,7 @@ from src.core.utils import *
 from src.core.model import *
 from .serverstatus import ServerStatus
 
+
 # import actkit.extensionkit as extensionkit
 # import actkit.logkit as logkit
 # import actkit.modelkit as modelkit
@@ -215,8 +216,8 @@ class SmartServerApp(WsgiServerApp):
         self.initialize_db()
         self.initialize_models()
         self.initialize_views()
-        self.initialize_res()
         self.initialize_api()
+        self.initialize_res()
 
     def initialize_base(self):
         INFO("InitializeBase")
@@ -266,12 +267,12 @@ class SmartServerApp(WsgiServerApp):
 
     def initialize_models(self):
         print "InitializeModels"
-        self.dynamic_load("MODEL_MODULE_INFO", self.model_list)
+        self.dynamic_load("model_module", self.model_list)
         ModelTypeBase.init_model_types(self.server_config, self.dbs)
 
     def initialize_views(self):
         print "InitializeViews"
-        self.dynamic_load("VIEW_MODULE_INFO", self.view_module_list)
+        self.dynamic_load("view_module", self.view_module_list)
 
     def initialize_protocol(self):
         print "InitializeProtocol"
@@ -280,7 +281,6 @@ class SmartServerApp(WsgiServerApp):
 
     def initialize_res(self):
         print "InitializeRes"
-        extensionkit.call_extension("RESLOADER_EXTENSION", serverConfig=self.server_config)
 
     def initialize_api(self):
         print "InitializeAPI"
