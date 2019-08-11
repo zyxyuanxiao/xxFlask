@@ -13,14 +13,14 @@ class ApiRegHelper(object):
         for m in reg_modules:
             for k, v in m.__dict__.iteritems():
                 if isinstance(v, type) and issubclass(v, pbx.Message):
-                    self.GetApiDataFromDescriptor(k, v, v.DESCRIPTOR)
+                    self.get_api_data_from_descriptor(k, v, v.DESCRIPTOR)
                 elif isinstance(v, pbx.EnumDescriptor):
-                    self.GetApiEnumFromDescriptor(v.name, v)
+                    self.get_api_enum_from_descriptor(v.name, v)
 
-    def GetApiEnumFromDescriptor(self, name, descriptor):
+    def get_api_enum_from_descriptor(self, name, descriptor):
         if descriptor.has_options:
             opts = descriptor.GetOptions().ListFields()
-            dic = {}
+            dic = dict()
             dic['urls'] = ''
             dic['view'] = ''
             dic['methods'] = []
@@ -32,10 +32,10 @@ class ApiRegHelper(object):
             dic['comment'] = dic['ec']
             self._dict_api[name] = dic
 
-    def GetApiDataFromDescriptor(self, name, message, descriptor):
+    def get_api_data_from_descriptor(self, name, message, descriptor):
         if descriptor.has_options:
             opts = descriptor.GetOptions().ListFields()
-            dic = {}
+            dic = dict()
             dic['urls'] = ''
             dic['view'] = ''
             dic['methods'] = []
@@ -63,8 +63,8 @@ class ApiRegHelper(object):
             help_dict[k] = dic_help
         return help_dict
 
-    def RegApiViews(self, reg_callback, reg_kwargs, current_setting, *modules):
-        def FindType(view_name):
+    def reg_api_views(self, reg_callback, reg_kwargs, current_setting, *modules):
+        def find_type(view_name):
             if len(view_name) > 0:
                 for x in modules:
                     if x.__dict__.has_key(view_name):
@@ -77,9 +77,9 @@ class ApiRegHelper(object):
         for k, dic in self._dict_api.iteritems():
             urls = dic['urls'].split(',')
             view = dic['view']
-            commet = dic['comment']
+            comment = dic['comment']
             url_list = map(lambda x: "{}{}".format(self.api_prefix, x.strip()), urls)
-            view_type = FindType(view)
+            view_type = find_type(view)
             if view_type:
                 dic['methods'] = view_type and view_type.methods
                 # kwargs = {'debug':current_setting.DEBUG}
@@ -89,60 +89,60 @@ class ApiRegHelper(object):
                 reg_callback(view_type, *url_list, resource_class_kwargs=kwargs)
                 print dic['descriptor'].name, url_list, view.encode('utf-8')
 
-        self.RegBuiltinApiViews(reg_callback, reg_kwargs)
+        self.reg_builtin_api_views(reg_callback, reg_kwargs)
 
-    def RegBuiltinApiViews(self, reg_callback, reg_kwargs):
-        self.RegBuiltinApiHelpViews(reg_callback, reg_kwargs)
-        self.RegBuiltinApiInfoViews(reg_callback, reg_kwargs)
-        self.RegBuiltinApiTimeViews(reg_callback, reg_kwargs)
-        self.RegBuiltinApiLogLevelViews(reg_callback, reg_kwargs)
-        self.RegBuiltinApiMyIpViews(reg_callback, reg_kwargs)
-        self.RegBuiltinApiModelsViews(reg_callback, reg_kwargs)
-        self.RegBuiltinApiRestableViews(reg_callback, reg_kwargs)
-        self.RegBuiltinApiDBStatusViews(reg_callback, reg_kwargs)
+    def reg_builtin_api_views(self, reg_callback, reg_kwargs):
+        self.reg_builtin_api_help_views(reg_callback, reg_kwargs)
+        # self.RegBuiltinApiInfoViews(reg_callback, reg_kwargs)
+        # self.RegBuiltinApiTimeViews(reg_callback, reg_kwargs)
+        # self.RegBuiltinApiLogLevelViews(reg_callback, reg_kwargs)
+        # self.RegBuiltinApiMyIpViews(reg_callback, reg_kwargs)
+        # self.RegBuiltinApiModelsViews(reg_callback, reg_kwargs)
+        # self.RegBuiltinApiRestableViews(reg_callback, reg_kwargs)
+        # self.RegBuiltinApiDBStatusViews(reg_callback, reg_kwargs)
         # InfoView.current_setting = current_setting
         # ModelDetailInfoView.APP_NAME = current_setting.APP_NAME
 
-    def RegBuiltinApiHelpViews(self, reg_callback, reg_kwargs):
+    def reg_builtin_api_help_views(self, reg_callback, reg_kwargs):
         url_list = ["{}/help/".format(self.api_prefix), "{}/help/<string:api_name>/".format(self.api_prefix)]
         reg_callback(view_builtin.ApiBuiltinHelpView, *url_list,
                      resource_class_args=[self.api_prefix, self.help_data()])
 
-    def RegBuiltinApiInfoViews(self, reg_callback, reg_kwargs):
-        view_builtin.ApiBuiltinInfoView.INFO = reg_kwargs.get('INFO', None)
-        url_list = ["{}/info/".format(self.api_prefix), "{}/Info/".format(self.api_prefix)]
-        reg_callback(view_builtin.ApiBuiltinInfoView, *url_list)
-
-    def RegBuiltinApiTimeViews(self, reg_callback, reg_kwargs):
-        url_list = ["{}/time/".format(self.api_prefix), "{}/time/<int:target_time>".format(self.api_prefix)]
-        reg_callback(view_builtin.ApiBuiltinTimeView, *url_list)
-
-    def RegBuiltinApiLogLevelViews(self, reg_callback, reg_kwargs):
-        url_list = []
-        url_list.append("{}/loglevel/".format(self.api_prefix))
-        url_list.append("{}/loglevel/<string:loglevel_type>/".format(self.api_prefix))
-        url_list.append("{}/loglevel/<string:loglevel_type>/<int:loglevel>/".format(self.api_prefix))
-        reg_callback(view_builtin.ApiBuiltinLogLevelView, *url_list)
-
-    def RegBuiltinApiMyIpViews(self, reg_callback, reg_kwargs):
-        url_list = ["{}/myip/".format(self.api_prefix)]
-        reg_callback(view_builtin.ApiBuiltinMyIpView, *url_list)
-
-    def RegBuiltinApiModelsViews(self, reg_callback, reg_kwargs):
-        url_list = []
-        url_list.append("{}/models/".format(self.api_prefix))
-        url_list.append("{}/models/<string:name>/".format(self.api_prefix))
-        url_list.append("{}/models/<string:name>/<string:key>/".format(self.api_prefix))
-        reg_callback(view_builtin.ApiBuiltinModelsView, *url_list)
-
-    def RegBuiltinApiRestableViews(self, reg_callback, reg_kwargs):
-        url_list = []
-        url_list.append("{}/restable/".format(self.api_prefix))
-        url_list.append("{}/restable/<string:name>/".format(self.api_prefix))
-        reg_callback(view_builtin.ApiBuiltinRestableView, *url_list)
-
-    def RegBuiltinApiDBStatusViews(self, reg_callback, reg_kwargs):
-        url_list = []
-        url_list.append("{}/db-status/".format(self.api_prefix))
-        url_list.append("{}/db-status/<string:name>/".format(self.api_prefix))
-        reg_callback(view_builtin.ApiBuiltinDBStatusView, *url_list)
+    # def RegBuiltinApiInfoViews(self, reg_callback, reg_kwargs):
+    #     view_builtin.ApiBuiltinInfoView.INFO = reg_kwargs.get('INFO', None)
+    #     url_list = ["{}/info/".format(self.api_prefix), "{}/Info/".format(self.api_prefix)]
+    #     reg_callback(view_builtin.ApiBuiltinInfoView, *url_list)
+    #
+    # def RegBuiltinApiTimeViews(self, reg_callback, reg_kwargs):
+    #     url_list = ["{}/time/".format(self.api_prefix), "{}/time/<int:target_time>".format(self.api_prefix)]
+    #     reg_callback(view_builtin.ApiBuiltinTimeView, *url_list)
+    #
+    # def RegBuiltinApiLogLevelViews(self, reg_callback, reg_kwargs):
+    #     url_list = []
+    #     url_list.append("{}/loglevel/".format(self.api_prefix))
+    #     url_list.append("{}/loglevel/<string:loglevel_type>/".format(self.api_prefix))
+    #     url_list.append("{}/loglevel/<string:loglevel_type>/<int:loglevel>/".format(self.api_prefix))
+    #     reg_callback(view_builtin.ApiBuiltinLogLevelView, *url_list)
+    #
+    # def RegBuiltinApiMyIpViews(self, reg_callback, reg_kwargs):
+    #     url_list = ["{}/myip/".format(self.api_prefix)]
+    #     reg_callback(view_builtin.ApiBuiltinMyIpView, *url_list)
+    #
+    # def RegBuiltinApiModelsViews(self, reg_callback, reg_kwargs):
+    #     url_list = []
+    #     url_list.append("{}/models/".format(self.api_prefix))
+    #     url_list.append("{}/models/<string:name>/".format(self.api_prefix))
+    #     url_list.append("{}/models/<string:name>/<string:key>/".format(self.api_prefix))
+    #     reg_callback(view_builtin.ApiBuiltinModelsView, *url_list)
+    #
+    # def RegBuiltinApiRestableViews(self, reg_callback, reg_kwargs):
+    #     url_list = []
+    #     url_list.append("{}/restable/".format(self.api_prefix))
+    #     url_list.append("{}/restable/<string:name>/".format(self.api_prefix))
+    #     reg_callback(view_builtin.ApiBuiltinRestableView, *url_list)
+    #
+    # def RegBuiltinApiDBStatusViews(self, reg_callback, reg_kwargs):
+    #     url_list = []
+    #     url_list.append("{}/db-status/".format(self.api_prefix))
+    #     url_list.append("{}/db-status/<string:name>/".format(self.api_prefix))
+    #     reg_callback(view_builtin.ApiBuiltinDBStatusView, *url_list)

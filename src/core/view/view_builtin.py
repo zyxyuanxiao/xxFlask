@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 
-import time
 import copy
 import flask
 import ujson as json
@@ -64,7 +63,7 @@ class ApiBuiltinHelpView(APIViewBase):
                     h['data'] = h['data_orig']
                     h['data_other'] = h['data_other_orig']
                 remove_nouse(h)
-            ret_obj = {}
+            ret_obj = dict()
             ret_obj['api'] = h
 
         ret_obj['version'] = '1.1.0.0'

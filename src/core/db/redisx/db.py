@@ -30,7 +30,7 @@ def current_db():
 
 
 def create_db(setting, log_helper=None):
-    RedisDB.DB_DICT = {r['NAME']: RedisDB(r, setting.DB_CHECK, log_helper) for r in setting.REDIS}
+    RedisDB.DB_DICT = {r['name']: RedisDB(r, setting.DB_CHECK, log_helper) for r in setting.REDIS}
     return RedisDB.DB_DICT
 
 
@@ -94,8 +94,8 @@ class RedisDB(object):
     def __init__(self, config, db_check, log_helper=None):
         self.log = log_helper
         self.config = config
-        self.name = config['NAME']
-        self.is_cluster = config['IS_CLUSTER']
+        self.name = config['name']
+        self.is_cluster = config['is_cluster']
         if self.name == 'default':
             RedisDB.default = self
         self.logging = config.get('LOG', False)

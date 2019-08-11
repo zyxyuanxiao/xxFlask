@@ -12,7 +12,7 @@ from src.core.db import *
 from src.core.utils import *
 from src.core.model import *
 from .serverstatus import ServerStatus
-
+from src.core.view.view_helper import ApiRegHelper
 
 # import actkit.extensionkit as extensionkit
 # import actkit.logkit as logkit
@@ -79,7 +79,7 @@ class WsgiServerApp(BaseServerApp):
         self.restful_api = flask_restful.Api(self.server_app)
         self.real_server = None
         self.request_count = 0
-        self.pool_size = self.server_config.wsgi_spawn_pool_size
+        self.pool_size = self.server_config.WSGI_SPAWN_POOL_SIZE
         self.kill_count = 0
         self.consul_service_name = None
         self.consul = None
@@ -123,7 +123,7 @@ class WsgiServerApp(BaseServerApp):
             return
 
         backdoor = gevent.backdoor.BackdoorServer(
-            ('127.0.0.1', self.server_config.debug_back_door),
+            ('127.0.0.1', self.server_config.DEBUG_BACK_DOOR),
             banner="Hello from gevent backdoor!",
             locals={'foo': "From defined scope!"})
         print 'starting backdoor {}'.format(self.server_config.DEBUG_BACK_DOOR)
@@ -285,13 +285,13 @@ class SmartServerApp(WsgiServerApp):
     def initialize_api(self):
         print "InitializeAPI"
         api_prefix = getattr(self.server_config, "API_PREFIX", self.server_name)
-        api_reg_helper = viewkit.ApiRegHelper(self.server_name, api_prefix, *self.pb_list)
-        api_reg_helper.RegApiViews(self.register_api, {"INFO": self.server_config}, None, *self.view_module_list)
+        api_reg_helper = ApiRegHelper(self.server_name, api_prefix, *self.pb_list)
+        api_reg_helper.reg_api_views(self.register_api, {"INFO": self.server_config}, None, *self.view_module_list)
 
     def launched(self):
         print "Launched"
         super(SmartServerApp, self).launched()
-        extensionkit.call_extension_tag("TAG_LAUNCHED", serverConfig=self.server_config)
+        # extensionkit.call_extension_tag("TAG_LAUNCHED", serverConfig=self.server_config)
 
         try:
             import uwsgidecorators
@@ -305,7 +305,7 @@ class SmartServerApp(WsgiServerApp):
 
     def post_forked(self):
         print "PostForked"
-        extensionkit.call_extension_tag("TAG_POSTFORKED", serverConfig=self.server_config)
+        # extensionkit.call_extension_tag("TAG_POSTFORKED", serverConfig=self.server_config)
 
 
 __app = None
