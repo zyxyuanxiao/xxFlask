@@ -8,9 +8,6 @@ import gevent
 import traceback
 
 
-# import actkit.misckit as misckit
-
-
 class RedisNotReady(Exception):
     pass
 

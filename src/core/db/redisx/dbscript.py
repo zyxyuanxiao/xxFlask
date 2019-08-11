@@ -11,7 +11,7 @@ class DbScript(object):
         self.args = []
         self.name = name
         self.script = script
-        sha_obj = sha.new(script)
+        sha_obj = sha(script)
         self.sha1 = sha_obj.hexdigest()
         self.db = None
 
