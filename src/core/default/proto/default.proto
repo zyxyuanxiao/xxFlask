@@ -1,0 +1,12 @@
+syntax = "proto3";
+import "options.proto";
+
+message ApiTest {
+    option (view) = "ApiTestView";
+    option (urls) = "/test/";
+    option (comment) = "get-test";
+
+    message resp{
+        bool success = 1;
+    }
+}

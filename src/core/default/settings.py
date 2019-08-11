@@ -40,25 +40,25 @@ class Config(object):
     # VIEW
     VIEW_MODULE = [
         {
-            'file_dir': 'default',
+            'file_dir': '/xxFlask/src/core/default/views/',
             'file_prefix': 'view_',
-            'module_prefix': 'default',
+            'module_prefix': '',
         }
     ]
 
     # MODEL
     MODEL_MODULE = [
         {
-            'file_dir': 'default',
+            'file_dir': '/xxFlask/src/core/default/models/',
             'file_prefix': 'model_',
-            'module_prefix': 'default',
+            'module_prefix': '',
         }
     ]
 
     # PROTOCOL
     PROTOCOL_MODULE = [
         {
-            'file_dir': 'protocol',
+            'file_dir': '/xxFlask/src/core/default/protocol/',
             'file_prefix': '',
             'file_suffix': 'pb2',
             'module_prefix': 'protocol',
