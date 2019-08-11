@@ -69,7 +69,7 @@ class WsgiServerApp(BaseServerApp):
         super(WsgiServerApp, self).__init__(**kwargs)
 
         self.server_config = self.kwargs.get('CONFIG')
-        self.server_name = self.server_config.app_name
+        self.server_name = self.server_config.APP_NAME
         self.server_app = flask.Flask(self.server_name)
         self.server_app.config.from_object(self.server_config)
         self.server_app.debug = self.server_app.config['DEBUG']

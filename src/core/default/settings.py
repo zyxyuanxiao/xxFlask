@@ -2,18 +2,18 @@
 
 
 class Config(object):
-    app_name = 'default'
-    debug = False
-    host = '0.0.0.0'
-    port = 8008
-    threaded = False
-    wsgi_spawn_pool_size = 100
-    debug_back_door = 5000
-    local_log = True
+    APP_NAME = 'default'
+    DEBUG = False
+    HOST = '0.0.0.0'
+    PORT = 8008
+    THREADED = False
+    WSGI_SPAWN_POOL_SIZE = 100
+    DEBUG_BACK_DOOR = 5000
+    LOCAL_LOG = True
 
     # DB
-    db_check = False
-    redis = [
+    DB_CHECK = False
+    REDIS = [
         {
             'name': 'default_redis',
             'host': '0.0.0.0',
@@ -24,11 +24,11 @@ class Config(object):
     ]
 
     # LOCK
-    locker_expired = 20
-    debug_lock = False
+    LOCKER_EXPIRED = 20
+    DEBUG_LOCK = False
 
     # todo EXTENSIONS
-    extensions = [
+    EXTENSIONS = [
         {
             'extension_name': '',
             'extension_module': '',
@@ -38,7 +38,7 @@ class Config(object):
     ]
 
     # VIEW
-    view_module = [
+    VIEW_MODULE = [
         {
             'file_dir': 'default',
             'file_prefix': 'view_',
@@ -47,7 +47,7 @@ class Config(object):
     ]
 
     # MODEL
-    model_module = [
+    MODEL_MODULE = [
         {
             'file_dir': 'default',
             'file_prefix': 'model_',
@@ -56,7 +56,7 @@ class Config(object):
     ]
 
     # PROTOCOL
-    protocol_module_info = [
+    PROTOCOL_MODULE = [
         {
             'file_dir': 'protocol',
             'file_prefix': '',

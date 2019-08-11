@@ -50,6 +50,42 @@ def all_running():
     return RedisDB.all_running or is_all_running()
 
 
+def db_check(func):
+    def decorate(*args, **kwargs):
+        while True:
+            self = args[0]
+            try:
+                if not self.redis:
+                    raise RedisNotReady('[db]connection {} is not ready!!!'.format(self.db_desc()))
+
+                ret = func(*args, **kwargs)
+                now_sec = int(time.time())
+                next_cnt = self.access_count.get(now_sec, 0) + 1
+                self.access_count[now_sec] = next_cnt
+                if next_cnt > self.access_count_max:
+                    self.access_count_max = next_cnt
+                    self.info('[db]connection {} access max={}'.format(self.db_desc(), next_cnt))
+                if next_cnt >= MAX_ACCESS_LIMIT:
+                    self.err('[db]connection {} access too fast... wait'.format(self.db_desc()))
+                    gevent.sleep(now_sec + 1 - time.time())
+                return ret
+            except RedisCommandCheckError as e:
+                raise e
+            except redis.exceptions.NoScriptError as e:
+                raise e
+            except RedisNotReady as e:
+                self.on_except()
+                self.info("{}".format(e))
+                self.connect()
+            except Exception as e:
+                self.on_except()
+                self.err(self.trace_full())
+                self.err('[db]exception={} args={}'.format(e, args))
+                self.connect()
+
+    return decorate
+
+
 class RedisDB(object):
     default = None
     DB_DICT = {}
@@ -126,40 +162,6 @@ class RedisDB(object):
         self.redis = None
         self.reconnecting = False
         RedisDB.all_running = False
-
-    def db_check(self, func):
-        def decorate(*args, **kwargs):
-            while True:
-                try:
-                    if not self.redis:
-                        raise RedisNotReady('[db]connection {} is not ready!!!'.format(self.db_desc()))
-
-                    ret = func(*args, **kwargs)
-                    now_sec = int(time.time())
-                    next_cnt = self.access_count.get(now_sec, 0) + 1
-                    self.access_count[now_sec] = next_cnt
-                    if next_cnt > self.access_count_max:
-                        self.access_count_max = next_cnt
-                        self.info('[db]connection {} access max={}'.format(self.db_desc(), next_cnt))
-                    if next_cnt >= MAX_ACCESS_LIMIT:
-                        self.err('[db]connection {} access too fast... wait'.format(self.db_desc()))
-                        gevent.sleep(now_sec + 1 - time.time())
-                    return ret
-                except RedisCommandCheckError as e:
-                    raise e
-                except redis.exceptions.NoScriptError as e:
-                    raise e
-                except RedisNotReady as e:
-                    self.on_except()
-                    self.info("{}".format(e))
-                    self.connect()
-                except Exception as e:
-                    self.on_except()
-                    self.err(self.trace_full())
-                    self.err('[db]exception={} args={}'.format(e, args))
-                    self.connect()
-
-        return decorate
 
     def connect(self):
         config = self.config
