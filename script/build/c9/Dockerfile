@@ -3,4 +3,4 @@ MAINTAINER cjw
 USER root
 
 ADD c9.tar.gz /root/
-RUN yum install -y glibc-static git && yum clean all
+RUN yum install -y npm glibc-static git && yum clean all
