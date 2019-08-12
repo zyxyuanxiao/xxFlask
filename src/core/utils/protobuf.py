@@ -12,7 +12,7 @@ def do_compile(app):
     python_out = u.get_script('./{}/protocol/'.format(app))
     pb_out = u.get_script(python_out + '/descriptor/')
     app_dir = u.get_script('./{}/'.format(app))
-    proto_dir = u.get_script('../proto/')
+    proto_dir = u.get_script('./proto/')
     proto_ctl = u.get_script('./{}/proto/'.format(app))
 
     u.clean_dir(input_path)

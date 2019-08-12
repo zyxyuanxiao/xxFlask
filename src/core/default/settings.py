@@ -42,7 +42,7 @@ class Config(object):
         {
             'file_dir': '/xxFlask/src/core/default/views/',
             'file_prefix': 'view_',
-            'module_prefix': '',
+            'module_prefix': 'views',
         }
     ]
 

@@ -14,14 +14,6 @@ from src.core.model import *
 from .serverstatus import ServerStatus
 from src.core.view.view_helper import ApiRegHelper
 
-# import actkit.extensionkit as extensionkit
-# import actkit.logkit as logkit
-# import actkit.modelkit as modelkit
-# import actkit.viewkit as viewkit
-# import actkit.reskit as reskit
-# import actkit.misckit as misckit
-# import actkit.timekit as timekit
-# from .serverstatus import ServerStatus
 
 class BaseServerAppExtend(object):
     pass
@@ -192,10 +184,6 @@ class WsgiServerApp(BaseServerApp):
     def start_server(self):
         pass
         # info('{} server is starting....{} {}'.format(self.serverName,self.host,self.port))
-
-        # ServerStatus.change(ServerStatus.OPEN)
-        # if self.serverApp.config['SERVER_TIME_OFFSET']:
-        #    gevent.spawn(ServerMiscInfo.get_time_offset)
         # self.serverApp.run(self.host,self.port)
 
 
@@ -234,9 +222,9 @@ class SmartServerApp(WsgiServerApp):
     def load_modules(self, module_info_list, loaded_module_list, loaded_module_dict):
         print self.server_name
         for module_info in module_info_list:
-            module_file_dir = module_info.get('FILE_DIR')
-            module_file_prefix = module_info.get('FILE_PREFIX')
-            module_prefix = module_info.get('MODULE_PREFIX')
+            module_file_dir = module_info.get('file_dir')
+            module_file_prefix = module_info.get('file_prefix')
+            module_prefix = module_info.get('module_prefix')
             load_module_info_list = []
 
             for (parent_dir, sub_dirs, sub_files) in os.walk(module_file_dir):
@@ -252,11 +240,11 @@ class SmartServerApp(WsgiServerApp):
 
             for (load_module_full_name, load_module_name) in load_module_info_list:
                 print "try_import:{},{}".format(load_module_full_name, load_module_name)
-                m = __import__(load_module_full_name, fromlist=[load_module_name])
+                m = __import__('src.core.{}.{}'.format(self.server_name, load_module_full_name),
+                               fromlist=[load_module_name])
                 print "import success:{}".format(m)
-                if loaded_module_list:
-                    loaded_module_list.append(m)
-                if loaded_module_dict:
+                loaded_module_list.append(m)
+                if isinstance(loaded_module_dict, dict):
                     loaded_module_dict[load_module_full_name] = m
 
     def dynamic_load(self, module_config_name, loaded_list=None, loaded_dict=None):
@@ -267,16 +255,16 @@ class SmartServerApp(WsgiServerApp):
 
     def initialize_models(self):
         print "InitializeModels"
-        self.dynamic_load("model_module", self.model_list)
+        self.dynamic_load("MODEL_MODULE", self.model_list)
         ModelTypeBase.init_model_types(self.server_config, self.dbs)
 
     def initialize_views(self):
         print "InitializeViews"
-        self.dynamic_load("view_module", self.view_module_list)
+        self.dynamic_load("VIEW_MODULE", self.view_module_list)
 
     def initialize_protocol(self):
         print "InitializeProtocol"
-        self.dynamic_load("PROTOCOL_MODULE_INFO", self.pb_list, self.pb_dict)
+        self.dynamic_load("PROTOCOL_MODULE", self.pb_list, self.pb_dict)
         pb_tools.initialize(self.pb_dict)
 
     def initialize_res(self):
