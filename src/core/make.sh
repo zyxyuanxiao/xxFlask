@@ -15,6 +15,7 @@ echo start make at `date`
 touch ${MAKE_TEMP_FILE}
 
 export __SERVER_MAKE=1
+export USER=root
 echo ${APP_DIR}
 cd ${APP_DIR}/utils/
 python protobuf.py $1
