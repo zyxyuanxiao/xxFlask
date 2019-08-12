@@ -65,7 +65,7 @@ def get_user():
 
 def init_env(values):
     if get_env('__SCRIPT_INIT') is None:
-        if not is_ci_mode() and get_env('__SCRIPT_IGNORE_EXTERNAL_ENV') is None:
+        if not is_ci_mode() and not get_env('__SCRIPT_IGNORE_EXTERNAL_ENV'):
             reload_external_env(False)
         if is_ci_mode():
             info('Init environment:')
