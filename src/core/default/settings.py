@@ -5,7 +5,7 @@ class Config(object):
     APP_NAME = 'default'
     DEBUG = False
     HOST = '0.0.0.0'
-    PORT = 8008
+    PORT = 7777
     THREADED = False
     WSGI_SPAWN_POOL_SIZE = 100
     DEBUG_BACK_DOOR = 5000
@@ -40,7 +40,7 @@ class Config(object):
     # VIEW
     VIEW_MODULE = [
         {
-            'file_dir': '/xxFlask/src/core/default/views/',
+            'file_dir': '/workspace/src/core/default/views/',
             'file_prefix': 'view_',
             'module_prefix': 'views',
         }
@@ -49,7 +49,7 @@ class Config(object):
     # MODEL
     MODEL_MODULE = [
         {
-            'file_dir': '/xxFlask/src/core/default/models/',
+            'file_dir': '/workspace/src/core/default/models/',
             'file_prefix': 'model_',
             'module_prefix': '',
         }
@@ -58,7 +58,7 @@ class Config(object):
     # PROTOCOL
     PROTOCOL_MODULE = [
         {
-            'file_dir': '/xxFlask/src/core/default/protocol/',
+            'file_dir': '/workspace/src/core/default/protocol/',
             'file_prefix': '',
             'file_suffix': 'pb2',
             'module_prefix': 'protocol',

@@ -97,6 +97,7 @@ class WsgiServerApp(BaseServerApp):
         self.real_server.serve_forever()
 
     def register_api(self, view_type, *url_list, **kwargs):
+        print view_type, url_list, kwargs
         self.restful_api.add_resource(view_type, *url_list, **kwargs)
 
     def initialize(self):
@@ -173,7 +174,6 @@ class WsgiServerApp(BaseServerApp):
         self.initialize()
         self.start_server()
         self.launched()
-        return self.get_wsgi_app()
 
     def launched(self):
         pass
@@ -305,8 +305,8 @@ def launch(**kwargs):
         return
 
     __app = SmartServerApp(**kwargs)
-    wsgi_app = __app.launch()
-    return wsgi_app
+    __app.launch()
+    return __app
 
 
 def set_extend(app_extend_cls):

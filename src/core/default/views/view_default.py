@@ -2,7 +2,7 @@ from src.core.view.view import APIView
 from src.core.default.protocol.default_pb2 import *
 
 
-class AutoFightCommandView(APIView):
+class ApiTestView(APIView):
 
     def get(self):
         print 'this is test'

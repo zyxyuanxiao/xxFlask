@@ -7,20 +7,11 @@ from src.core.server import wsgi
 from src.core.default import settings
 
 wsgi_app = wsgi.launch(CONFIG=settings.Config)
+server_app = wsgi_app.server_app
 
 
 def debug_run():
-    import gevent.pool
-    import gevent.wsgi
-    worker_pool = gevent.pool.Pool(settings.Config.WSGI_SPAWN_POOL_SIZE)
-    real_server = gevent.wsgi.WSGIServer((settings.Config.HOST,
-                                          settings.Config.PORT),
-                                         settings.Config.APP_NAME,
-                                         spawn=worker_pool)
-    if real_server is None:
-        assert settings.Config.APP_NAME + ' wsgi server init error'
-        return
-    real_server.serve_forever()
+    wsgi_app.debug_run()
 
 
 if __name__ == "__main__":

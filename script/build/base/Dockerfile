@@ -15,4 +15,4 @@ RUN yum update -y && yum upgrade -y && yum install -y \
 RUN pip install --no-cache-dir --trusted-host pypi.douban.com -i http://pypi.douban.com/simple/ \
     requests flask flask-restful gevent==1.1.2 protobuf redis==2.10.6 sqlalchemy \
     xlrd httpie ujson M2Crypto pycrypto lz4 uWSGI bcrypt cachetools redis-py-cluster==1.3.6\
-    ConcurrentLogHandler==0.8.7
+    concurrent_log_handler
