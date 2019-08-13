@@ -21,5 +21,5 @@ cd ${APP_DIR}/utils/
 python protobuf.py $1
 
 rm ${MAKE_TEMP_FILE}
-echo "fci make finished at" `date`
+echo "make finished at" `date`
 echo `date` > ${MAKE_DOWN_FILE}

@@ -16,7 +16,7 @@ import ctypes
 import traceback
 from collections import Iterable, OrderedDict
 
-proj_name = 'FCI'
+proj_name = 'xxFlask'
 
 original_env = None
 
