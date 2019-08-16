@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 import sys
 
-sys.path.append('/xxFlask/')
+sys.path.append('/workspace/')
 
 from src.core.server import wsgi
 from src.core.default import settings
