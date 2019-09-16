@@ -3,35 +3,19 @@ import "google/protobuf/descriptor.proto";
 
 
 extend google.protobuf.MessageOptions {
-    bool no_reflection = 60001;
-    bool csharp_generate_code = 60002;
-    bool csharp_auto_load = 60003;
     string urls = 51001;
     string view = 51002;
     string comment = 51003;
-    bool disable_log = 51004;
-    string tmd = 51006;//tlog header desc
-    int32  tm_order = 51007;//tlog message order
-    bool disable_tlog_trans = 51008;
-    bool tlog_header = 51009;
-    bool post_cache = 51010;
-    string tmc = 51011;//tlog message comment
 }
 
 extend google.protobuf.FieldOptions {
     bool pk = 60001;
     string fc = 61002;
     bool hide_desc = 610003;
-    string tfi = 610004;//tlog index
-    string tfs = 610005;//tlog size
-    string tfdv = 610006;//tlog defaultvalue
-    string tfd = 610007;//tlog desc
-    string player = 610008; //tlog player data
 }
 
 extend google.protobuf.EnumOptions{
     string ec = 60001;
-    int32 te_order = 60002;//tlog enum order
 }
 
 extend google.protobuf.EnumValueOptions{
